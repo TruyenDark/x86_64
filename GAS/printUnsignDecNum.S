@@ -9,6 +9,8 @@ printUnsignDecNum:
 	movq %rcx, 8(%rsp)
 	subq $128, %rsp
 	movq $0, 32(%rsp)
+	movq %rdi, 48(%rsp)
+	leaq buf(%rip), %rdi
 	movq $0x0a, %rcx
 	movq 136(%rsp), %rax
 	movq $23, %r11
@@ -22,21 +24,24 @@ loop:
 	subq %rax, %r10
 	addq $0x30, %r10
 	addq $1, %r8
-	movb %r10, buf(%rip, %r11)
+	movb %r10b, (%rdi, %r11)
 	movq 136(%rsp), %r10
 	cmpq $0, %r10
 	je end
 	subq $1, %r11
 	jmp loop
 end:
+	movq %r11, 56(%rsp)
 	movq %r8, 40(%rsp)
 	movq $-11, %rcx
 	call GetStdHandle
 	movq %rax, %rcx
-	leaq buf(%rip, %r11), %rdx
+	movq 56(%rsp), %r11
+	leaq (%rdi, %r11), %rdx
 	movq 40(%rsp), %r8
 	leaq bufZ(%rip), %r9
 	movq $0, 32(%rsp)
 	call WriteFile
+	movq 48(%rsp), %rdi
 	addq $128, %rsp
 	retq

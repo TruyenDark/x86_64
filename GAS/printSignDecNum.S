@@ -11,6 +11,8 @@ printSignDecNum:
 	movq %rcx, 40(%rsp)
 	movq $0, 32(%rsp)
 	movq $0x8000000000000000, %r10
+	movq %rsi, 72(%rsp)
+	leaq buf(%rip), %rsi
 	xor %r8, %r8
 	test %rcx, %r10
 	movq $0x0a, %r10
@@ -32,7 +34,7 @@ loop:
 	subq %rax, %r11
 	addq $0x30, %r11
 	addq $1, %r8
-	movb %r11b, buf(%rip, %rcx)
+	movb %r11b, (%rsi, %rcx)
 	movq 136(%rsp), %r11
 	cmpq $0, %r11
 	je end
@@ -48,7 +50,7 @@ end:
 	test %r10, %r10
 	js end1
 	movq 64(%rsp), %rcx
-	leaq buf(%rip, %rcx), %rdx
+	leaq (%rsi, %rcx), %rdx
 	movq 56(%rsp), %rcx
 	movq 48(%rsp), %r8
 	leaq bufZ(%rip), %r9
@@ -57,13 +59,14 @@ end:
 end1:
 	movq 64(%rsp), %rcx
 	subq $1, %rcx
-	movb $0x2d, buf(%rip, %rcx)
-	leaq buf(%rip, %rcx), %rdx
+	movb $0x2d, (%rsi, %rcx)
+	leaq (%rsi, %rcx), %rdx
 	movq 56(%rsp), %rcx
 	movq 48(%rsp), %r8
 	addq $1, %r8
 	leaq bufZ(%rip), %r9
 	call WriteFile
 exit:
+	movq 72(%rsp), %rsi
 	addq $128, %rsp
 	ret
