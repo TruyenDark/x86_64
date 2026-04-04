@@ -1,5 +1,6 @@
 #ifdef _WIN64
 	#include <stdio.h>
+	#include <windows.h>
 	extern void printString(const char* p);
 	extern void printHexNum(long long num);
 	extern void printUnsignDecNum(long long num);
