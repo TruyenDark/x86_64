@@ -17,6 +17,7 @@ printUnsignDecNum:
 	xor %r8, %r8
 loop:
 	xorq %rdx, %rdx
+	movq 136(%rsp), %rax
 	movq 136(%rsp), %r10
 	div %rcx
 	movq %rax, 136(%rsp)
@@ -37,6 +38,7 @@ end:
 	call GetStdHandle
 	movq %rax, %rcx
 	movq 56(%rsp), %r11
+	leaq buf(%rip), %rdi
 	leaq (%rdi, %r11), %rdx
 	movq 40(%rsp), %r8
 	leaq bufZ(%rip), %r9
