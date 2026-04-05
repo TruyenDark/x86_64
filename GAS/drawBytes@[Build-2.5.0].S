@@ -1,19 +1,63 @@
+###############################################################################
+#                                                                             #
+#    #######  #     #  #     #   #####   #     #  ###  #        #             #
+#    #        #     #  ##    #  #     #  #     #   #   #        #             #
+#    #        #     #  # #   #  #        #     #   #   #        #             #
+#    #####    #     #  #  #  #  #        #######   #   #        #             #
+#    #        #     #  #   # #  #        #     #   #   #        #             #
+#    #        #     #  #    ##  #     #  #     #   #   #        #             #
+#    #         #####   #     #   #####   #     #  ###  #######  #######       #
+#                                                                             #
+#    Project: FunChill-Wanderlust                                             #
+#    Module:  Low-Level I/O Utility (x86_64 / GAS)                            #
+#    Author:  Truyen                                                          #
+#    Date:    2026-04-05                                                      #
+#                                                                             #
+###############################################################################
+#                                                                             #
+#    This program is free software: you can redistribute it and/or modify     #
+#    it under the terms of the GNU General Public License as published by     #
+#    the Free Software Foundation, either version 3 of the License, or        #
+#    (at your option) any later version.                                      #
+#                                                                             #
+#    This program is distributed in the hope that it will be useful,          #
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of           #
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the             #
+#    GNU General Public License for more details.                             #
+#                                                                             #
+#    You should have received a copy of the GNU General Public License        #
+#    along with this program. If not, see <https://www.gnu.org/licenses/>.    #
+#                                                                             #
+###############################################################################
 .section .bss
+    .type buf, @object
+    .type bufZ, @object
 buf:
     .skip 32
+    .size buf, .-buf
 bufZ:
     .skip 32
+    .size bufZ, .-bufZ
 .section .data
+    .type atC, @object
+    .type mapC, @object
 atC:
     .ascii "@"
+    .size atC, .-atC
 mapC:
     .ascii "0123456789abcdef"
+    .size mapC, .-mapC
 .section .text
     .global drawBytes
     .global printHexNum
     .global printSignDecNum
     .global printString
     .global printUnsignDecNum
+    .type drawBytes, @function
+    .type printHexNum, @function
+    .type printSignDecNum, @function
+    .type printString, @function
+    .type printUnsignDecNum, @function
 drawBytes:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -93,6 +137,7 @@ drawBytes:
     movq 48(%rsp), %rdi
     addq $256, %rsp
     ret
+    .size drawBytes, .-drawBytes
 # printString
 printString:
 	movq %rcx, 8(%rsp)
@@ -122,6 +167,7 @@ printString:
 	movq 48(%rsp), %rsi
 	addq $64, %rsp
 	ret
+	.size printString, .-printString
 # printSignDecNum
 printSignDecNum:
 	movq %rcx, 8(%rsp)
@@ -190,6 +236,7 @@ printSignDecNum:
 	movq 72(%rsp), %rsi
 	addq $128, %rsp
 	ret
+	.size printSignDecNum, .-printSignDecNum
 # printUnsignDecNum
 printUnsignDecNum:
 	movq %rcx, 8(%rsp)
@@ -233,6 +280,7 @@ printUnsignDecNum:
 	movq 48(%rsp), %rdi
 	addq $128, %rsp
 	ret
+	.size printUnsignDecNum, .-printUnsignDecNum
 # printHexNum
 printHexNum:
 	movq %rcx, 8(%rsp)
@@ -279,3 +327,4 @@ printHexNum:
 	movq 72(%rsp), %rdi
 	addq $128, %rsp
 	ret
+	.size printHexNum, .-printHexNum
